@@ -358,4 +358,70 @@
     </style>
 </head>
 <body>
+    <!-- Particle Background -->
     <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="menu-toggle">☰</div>
+        <div class="nav-items">
+            <a href="#" class="nav-item">Home</a>
+            <a href="#" class="nav-item">About</a>
+            <a href="#" class="nav-item">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1>YouTube Downloader</h1>
+        <p>Paste the YouTube URL below to download</p>
+        <div class="input-container">
+            <input type="text" placeholder="Enter YouTube URL" id="urlInput">
+        </div>
+        <div class="loading" id="loading">Loading</div>
+        <div class="download-options" id="downloadOptions">
+            <button>Download Video</button>
+            <button>Download Audio</button>
+        </div>
+        <div class="options-container">
+            <label><input type="checkbox" id="audioOnly"> Audio Only</label>
+            <label><input type="checkbox" id="highQuality"> High Quality</label>
+        </div>
+        <div id="progress">
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+            <div id="progress-text">0%</div>
+        </div>
+        <div id="errorMessage"></div>
+        <button id="retryButton">Retry</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="credits-left">
+            <span>Created by <a href="#">Your Name</a></span>
+        </div>
+        <div class="footer-center">
+            <span>© 2025 YouTube Downloader</span>
+        </div>
+        <div class="credits-right">
+            <span>Contact: <a href="mailto:your.email@example.com">your.email@example.com</a></span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Load particles.js with the configuration file
+        particlesJS.load('particles-js', 'particles.json', function() {
+            console.log('particles.js loaded');
+        });
+
+        // Basic JavaScript to toggle the mobile menu
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-items').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
