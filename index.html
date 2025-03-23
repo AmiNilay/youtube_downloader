@@ -358,70 +358,368 @@
     </style>
 </head>
 <body>
-    <!-- Particle Background -->
     <div id="particles-js"></div>
 
-    <!-- Navbar -->
     <nav class="navbar">
-        <div class="menu-toggle">☰</div>
+        <span class="menu-toggle">☰</span>
         <div class="nav-items">
-            <a href="#" class="nav-item">Home</a>
-            <a href="#" class="nav-item">About</a>
-            <a href="#" class="nav-item">Contact</a>
+            <a href="/" class="nav-item">Home</a>
+            <a href="/help" class="nav-item">Help</a>
         </div>
     </nav>
 
-    <!-- Main Container -->
     <div class="container">
         <h1>YouTube Downloader</h1>
-        <p>Paste the YouTube URL below to download</p>
+        <p>Enter a YouTube URL to download video or audio</p>
         <div class="input-container">
-            <input type="text" placeholder="Enter YouTube URL" id="urlInput">
+            <input type="text" id="urlInput" placeholder="Paste YouTube URL here">
         </div>
-        <div class="loading" id="loading">Loading</div>
+        <div class="loading" id="loading">Fetching streams</div>
         <div class="download-options" id="downloadOptions">
-            <button>Download Video</button>
-            <button>Download Audio</button>
-        </div>
-        <div class="options-container">
-            <label><input type="checkbox" id="audioOnly"> Audio Only</label>
-            <label><input type="checkbox" id="highQuality"> High Quality</label>
+            <p id="videoTitle"></p>
+            <div id="streamButtons"></div>
+            <div class="options-container" id="extraOptions"></div>
         </div>
         <div id="progress">
             <div class="progress-bar">
                 <div class="progress-bar-fill" id="progressBar"></div>
             </div>
-            <div id="progress-text">0%</div>
+            <div id="progress-text"></div>
         </div>
         <div id="errorMessage"></div>
         <button id="retryButton">Retry</button>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="credits-left">
-            <span>Created by <a href="#">Your Name</a></span>
+            <span class="message-icon">✉️</span>
+            <span>Contact: <a href="mailto:your-email@example.com">your-email@example.com</a></span>
         </div>
         <div class="footer-center">
-            <span>© 2025 YouTube Downloader</span>
+            <span>© 2025 YouTube Downloader. All rights reserved.</span>
         </div>
         <div class="credits-right">
-            <span>Contact: <a href="mailto:your.email@example.com">your.email@example.com</a></span>
+            <span>Designed by <a href="https://github.com/aminilay" target="_blank">Aminilay</a></span>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Load particles.js with the configuration file
-        particlesJS.load('particles-js', 'particles.json', function() {
-            console.log('particles.js loaded');
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ff5555"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ff5555",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
         });
 
-        // Basic JavaScript to toggle the mobile menu
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            document.querySelector('.nav-items').classList.toggle('active');
+        // JavaScript for handling form submission and downloads
+        const urlInput = document.getElementById('urlInput');
+        const loading = document.getElementById('loading');
+        const downloadOptions = document.getElementById('downloadOptions');
+        const videoTitle = document.getElementById('videoTitle');
+        const streamButtons = document.getElementById('streamButtons');
+        const extraOptions = document.getElementById('extraOptions');
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progress-text');
+        const errorMessage = document.getElementById('errorMessage');
+        const retryButton = document.getElementById('retryButton');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navItems = document.querySelector('.nav-items');
+
+        let currentUrl = '';
+        let isDownloading = false;
+
+        menuToggle.addEventListener('click', () => {
+            navItems.classList.toggle('active');
         });
+
+        urlInput.addEventListener('input', () => {
+            if (urlInput.value.trim() !== currentUrl) {
+                resetUI();
+            }
+        });
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !isDownloading) {
+                fetchStreams();
+            }
+        });
+
+        retryButton.addEventListener('click', () => {
+            resetUI();
+            fetchStreams();
+        });
+
+        function resetUI() {
+            loading.style.display = 'none';
+            downloadOptions.style.display = 'none';
+            downloadOptions.classList.remove('show');
+            streamButtons.innerHTML = '';
+            extraOptions.innerHTML = '';
+            videoTitle.textContent = '';
+            progress.style.display = 'none';
+            progressBar.style.width = '0%';
+            progressBar.classList.remove('indeterminate');
+            progressText.textContent = '';
+            errorMessage.style.display = 'none';
+            retryButton.style.display = 'none';
+            isDownloading = false;
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            retryButton.style.display = 'block';
+            loading.style.display = 'none';
+            progress.style.display = 'none';
+            progressBar.classList.remove('indeterminate');
+        }
+
+        function fetchStreams() {
+            const url = urlInput.value.trim();
+            if (!url) {
+                showError('Please enter a YouTube URL.');
+                return;
+            }
+
+            currentUrl = url;
+            loading.style.display = 'block';
+            downloadOptions.style.display = 'none';
+            errorMessage.style.display = 'none';
+            retryButton.style.display = 'none';
+
+            fetch('/get_streams', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `url=${encodeURIComponent(url)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                if (data.error) {
+                    showError(data.error);
+                    return;
+                }
+
+                videoTitle.textContent = data.title;
+                streamButtons.innerHTML = '';
+                extraOptions.innerHTML = '';
+
+                data.streams.forEach(stream => {
+                    const button = document.createElement('button');
+                    button.textContent = stream.quality === 'Audio' ? 'Audio (mp3)' : `${stream.quality}p`;
+                    button.dataset.formatId = stream.format_id;
+                    button.dataset.format = stream.format;
+                    button.addEventListener('click', () => downloadFile(url, stream.format_id, stream.format));
+                    streamButtons.appendChild(button);
+                });
+
+                if (data.thumbnail_available) {
+                    const thumbnailLabel = document.createElement('label');
+                    const thumbnailCheckbox = document.createElement('input');
+                    thumbnailCheckbox.type = 'checkbox';
+                    thumbnailCheckbox.id = 'thumbnailCheckbox';
+                    thumbnailLabel.appendChild(thumbnailCheckbox);
+                    thumbnailLabel.appendChild(document.createTextNode('Thumbnail'));
+                    extraOptions.appendChild(thumbnailLabel);
+
+                    thumbnailCheckbox.addEventListener('change', () => {
+                        if (thumbnailCheckbox.checked) {
+                            downloadExtra(url, 'thumbnail');
+                        }
+                    });
+                }
+
+                downloadOptions.style.display = 'block';
+                setTimeout(() => downloadOptions.classList.add('show'), 10);
+            })
+            .catch(error => {
+                loading.style.display = 'none';
+                showError('Failed to fetch streams. Please check your connection and try again.');
+                console.error('Fetch streams error:', error);
+            });
+        }
+
+        function downloadFile(url, formatId, format) {
+            if (isDownloading) return;
+            isDownloading = true;
+
+            progress.style.display = 'block';
+            progressBar.classList.add('indeterminate');
+            progressText.textContent = 'Downloading...';
+            errorMessage.style.display = 'none';
+            retryButton.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('url', url);
+            formData.append('format_id', formatId);
+            formData.append('format', format);
+
+            fetch('/download', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Download failed');
+                    });
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `${videoTitle.textContent}.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                progressBar.classList.remove('indeterminate');
+                progressBar.style.width = '100%';
+                progressText.textContent = 'Download complete!';
+                setTimeout(() => {
+                    progress.style.display = 'none';
+                    progressBar.style.width = '0%';
+                    progressText.textContent = '';
+                    isDownloading = false;
+                }, 2000);
+            })
+            .catch(error => {
+                progress.style.display = 'none';
+                progressBar.classList.remove('indeterminate');
+                showError(error.message || 'Download failed. Please try again.');
+                isDownloading = false;
+                console.error('Download error:', error);
+            });
+        }
+
+        function downloadExtra(url, type) {
+            if (isDownloading) return;
+            isDownloading = true;
+
+            progress.style.display = 'block';
+            progressBar.classList.add('indeterminate');
+            progressText.textContent = 'Downloading thumbnail...';
+            errorMessage.style.display = 'none';
+            retryButton.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('url', url);
+            formData.append('type', type);
+
+            fetch('/download_extra', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Thumbnail download failed');
+                    });
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `${videoTitle.textContent}_thumbnail.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                progressBar.classList.remove('indeterminate');
+                progressBar.style.width = '100%';
+                progressText.textContent = 'Thumbnail download complete!';
+                setTimeout(() => {
+                    progress.style.display = 'none';
+                    progressBar.style.width = '0%';
+                    progressText.textContent = '';
+                    isDownloading = false;
+                }, 2000);
+            })
+            .catch(error => {
+                progress.style.display = 'none';
+                progressBar.classList.remove('indeterminate');
+                showError(error.message || 'Thumbnail download failed. Please try again.');
+                isDownloading = false;
+                console.error('Thumbnail download error:', error);
+            });
+        }
     </script>
 </body>
 </html>
