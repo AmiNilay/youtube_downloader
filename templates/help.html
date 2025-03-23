@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Help - YouTube Downloader</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon_io/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon_io/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon_io/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon_io/favicon-16x16.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background, #1a1a1a);
+            color: var(--text-color, #ffffff);
+            scroll-behavior: smooth;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            padding: 8px 20px;
+            background: var(--navbar-bg, linear-gradient(90deg, #cc0000, #990000));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--navbar-text, #ffffff);
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-items.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--navbar-bg);
+            padding: 10px;
+        }
+
+        .nav-item {
+            color: var(--navbar-text, #ffffff);
+            text-decoration: none;
+            padding: 6px 15px;
+            margin: 0 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        h1, h2 {
+            color: var(--text-color, #ffffff);
+        }
+
+        section {
+            margin-bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .warning {
+            color: #ff5555;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: var(--text-color, #ffffff);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            width: 100%;
+        }
+
+        a {
+            color: #ff5555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #ff7777;
+            text-decoration: underline;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #cc0000;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-home:hover {
+            background-color: #990000;
+            transform: translateY(-2px);
+        }
+
+        #back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #cc0000;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #back-to-top:hover {
+            background-color: #990000;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            .nav-items {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--navbar-bg);
+                padding: 10px;
+            }
+            .nav-items.active {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="navbar">
+        <span class="menu-toggle">☰</span>
+        <div class="nav-items">
+            <a href="/" class="nav-item">Home</a>
+            <a href="/help" class="nav-item">Help</a>
+        </div>
+    </div>
+    <header>
+        <h1><span role="img" aria-label="Book">📖</span> Help Section</h1>
+        <a href="/" class="back-home">Back to Home</a>
+    </header>
+    <main>
+        <section>
+            <h2><strong>Usage Instructions</strong></h2>
+            <p>1️⃣ Enter a valid YouTube URL in the input field.</p>
+            <p>2️⃣ Wait for the available download options to appear.</p>
+            <p>3️⃣ Click the desired format (e.g., MP4, MP3, Subtitles, Thumbnail).</p>
+            <p>4️⃣ The download will start automatically.</p>
+        </section>
+        <section>
+            <h2><strong>📌 FAQs</strong></h2>
+            <ul>
+                <li><strong>🔹 Why is the download slow?</strong> A stable internet connection is required for optimal performance. If the issue persists, see Troubleshooting Tips below.</li>
+                <li><strong>🔹 Can I download private videos?</strong> No. This tool only supports downloading public videos. Authentication-based downloads are not supported yet.</li>
+                <li><strong>🔹 What formats are supported?</strong> Video: MP4, Audio: MP3, Subtitles: SRT, Thumbnail: JPG</li>
+            </ul>
+        </section>
+        <section>
+            <h2>⚙️ Troubleshooting Tips</h2>
+            <ul>
+                <li><strong>⚠️ Download is slow or stuck:</strong> Ensure you have a stable internet connection. Try restarting your router or switching to a faster network.</li>
+                <li><strong>⚠️ Video not available for download:</strong> Some videos may have restrictions, such as age limits, region locks, or copyright protections, preventing downloads. Try a different video.</li>
+                <li><strong>⚠️ Download button not working:</strong> Refresh the page and make sure you've entered a valid YouTube URL. If the issue persists, try using a different browser.</li>
+                <li><strong>⚠️ Downloaded file has no sound:</strong> This can happen if the selected format only contains video. Choose a format that includes both video and audio.</li>
+                <li><strong>⚠️ Subtitles not downloading:</strong> Not all videos have subtitles available. Check if the video has CC (Closed Captions) enabled on YouTube.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>⚠️ Legal Disclaimer</h2>
+            <p><strong>📌 Legal Compliance & Usage Restrictions</strong></p>
+            <p>This tool is intended only for legally permitted downloads as per YouTube’s Terms of Service.</p>
+            <p>Downloading copyrighted content without permission is illegal and violates YouTube’s policies.</p>
+            <p>Users are responsible for ensuring their use of this tool complies with copyright laws.</p>
+            <p><strong>📌 Permitted Uses</strong></p>
+            <ul>
+                <li>✅ Download your own videos (if you're the owner).</li>
+                <li>✅ Download Creative Commons (CC) licensed or royalty-free content.</li>
+                <li>✅ Use downloads for personal, non-commercial purposes only.</li>
+            </ul>
+            <p><strong>❌ Restricted Uses</strong></p>
+            <ul>
+                <li>🚫 Downloading copyrighted content without permission is strictly prohibited.</li>
+                <li>🚫 Using this tool to distribute or resell content is not allowed.</li>
+            </ul>
+            <p><strong>📌 DMCA Compliance</strong></p>
+            <p>If you believe your copyrighted content has been misused, please contact the developer for a takedown request.</p>
+        </section>
+        <section>
+            <h2>⚠️ Important Warning</h2>
+            <p>A stable and fast internet connection is required for optimal performance.</p>
+            <p>Slow or unstable connections may result in timeouts or incomplete downloads.</p>
+        </section>
+    </main>
+    <footer>Designed & Developed with ❤️ By Nilay Naha. © 2025 All rights reserved.</footer>
+    <button id="back-to-top" title="Go to top">↑</button>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: window.innerWidth < 768 ? 40 : 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        const backToTopButton = document.getElementById("back-to-top");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+        backToTopButton.addEventListener("click", function() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        });
+    </script>
+</body>
+</html>

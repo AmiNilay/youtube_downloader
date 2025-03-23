@@ -1,0 +1,32 @@
+# Requirements for YouTube Downloader Project
+
+# Flask: A lightweight web framework for Python used to create the backend server.
+Flask==2.3.2
+
+# yt-dlp: A modern, actively maintained fork of youtube-dl for downloading YouTube videos and metadata.
+yt-dlp==2023.9.24
+
+# Requests: A library for making HTTP requests (used for internet connection checks).
+requests==2.31.0
+
+# Optional Dependencies
+# If you want to handle video/audio conversion or thumbnail processing:
+# FFmpeg is required for video/audio merging and format conversion.
+# Note: FFmpeg is not a Python package and must be installed separately.
+# Installation instructions:
+# - Windows: Download from https://ffmpeg.org/download.html
+# - macOS: Run `brew install ffmpeg`
+# - Linux: Run `sudo apt install ffmpeg`
+
+# Instructions for Contributors:
+# 1. Install the required Python packages using pip:
+#    pip install -r requirements.txt
+# 2. Ensure FFmpeg is installed and added to your system's PATH.
+# 3. Run the app using the command:
+#    python yt_down.py
+# 4. Modify or improve the code as needed. Contributions are welcome!
+
+# Notes:
+# - This project uses Flask for the backend and yt-dlp for downloading YouTube content.
+# - If you add new features or dependencies, update this file accordingly.
+# - Always test your changes thoroughly before submitting pull requests.
