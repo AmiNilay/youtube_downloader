@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Downloader</title>
-    <!-- Favicon Links -->
-    <link rel="icon" type="image/x-icon" href="static/favicon_io/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="static/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="static/favicon_io/favicon-16x16.png">
-    <!-- Google Fonts -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon_io/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon_io/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon_io/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon_io/favicon-16x16.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
             margin: 0;
@@ -25,6 +22,7 @@
             display: flex;
             flex-direction: column;
         }
+
         #particles-js {
             position: fixed;
             top: 0;
@@ -33,6 +31,7 @@
             height: 100%;
             z-index: -1;
         }
+
         .navbar {
             display: flex;
             justify-content: center;
@@ -45,16 +44,19 @@
             width: 100%;
             z-index: 1000;
         }
+
         .menu-toggle {
             display: none;
             font-size: 1.5em;
             cursor: pointer;
             color: var(--navbar-text, #ffffff);
         }
+
         .nav-items {
             display: flex;
             gap: 20px;
         }
+
         .nav-items.active {
             display: flex;
             flex-direction: column;
@@ -65,6 +67,7 @@
             background: var(--navbar-bg);
             padding: 10px;
         }
+
         .nav-item {
             color: var(--navbar-text, #ffffff);
             text-decoration: none;
@@ -76,10 +79,12 @@
             font-weight: bold;
             font-size: 14px;
         }
+
         .nav-item:hover {
             background-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
+
         .container {
             flex: 1;
             display: flex;
@@ -93,20 +98,24 @@
             height: calc(100vh - 120px);
             box-sizing: border-box;
         }
+
         .container h1 {
             font-size: 48px;
             margin-bottom: 20px;
         }
+
         .container p {
             color: #ff5555;
             font-size: 14px;
             margin-bottom: 20px;
         }
+
         .input-container {
             position: relative;
             min-width: 300px;
             max-width: 90%;
         }
+
         .input-container input {
             width: 100%;
             padding: 12px;
@@ -122,44 +131,53 @@
             overflow-x: auto;
             white-space: nowrap;
         }
+
         .input-container input::placeholder {
             color: #aaaaaa;
             text-align: center;
         }
+
         .input-container input:hover {
             box-shadow: 0 4px 10px rgba(255, 85, 85, 0.5);
             transform: scale(1.02);
         }
+
         .input-container input:focus {
             outline: none;
             box-shadow: 0 4px 10px rgba(255, 85, 85, 0.8);
             transform: scale(1.02);
         }
+
         .loading {
             display: none;
             margin-top: 20px;
             font-size: 18px;
             color: #ff5555;
         }
+
         .loading::after {
             content: ".";
             animation: dots 1.5s infinite;
         }
+
         @keyframes dots {
             0%, 20% { content: "."; }
             40% { content: ".."; }
             60% { content: "..."; }
             80%, 100% { content: ""; }
         }
+
         .download-options {
             display: none;
             margin-top: 20px;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+
         .download-options.show {
             opacity: 1;
         }
+
         .download-options button {
             padding: 10px 20px;
             margin: 5px;
@@ -171,22 +189,26 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
         }
+
         .download-options button:hover {
             background-color: #990000;
             transform: translateY(-2px);
         }
+
         .options-container {
             margin-top: 10px;
             display: flex;
             gap: 20px;
             justify-content: center;
         }
+
         .options-container label {
             display: flex;
             align-items: center;
             gap: 5px;
             font-size: 14px;
         }
+
         #progress {
             width: 100%;
             max-width: 300px;
@@ -194,6 +216,7 @@
             text-align: center;
             display: none;
         }
+
         .progress-bar {
             width: 100%;
             height: 10px;
@@ -202,24 +225,29 @@
             overflow: hidden;
             margin-top: 10px;
         }
+
         .progress-bar-fill {
             height: 100%;
             background-color: #cc0000;
             transition: width 0.3s ease;
         }
+
         .progress-bar-fill.indeterminate {
             width: 50% !important;
             background: linear-gradient(to right, #cc0000 0%, #cc0000 50%, #333 50%, #333 100%) !important;
             animation: indeterminate 1.5s infinite linear;
         }
+
         @keyframes indeterminate {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(200%); }
         }
+
         #progress-text {
             margin-top: 5px;
             font-size: 14px;
         }
+
         #errorMessage {
             color: #ff5555;
             margin-top: 10px;
@@ -228,6 +256,7 @@
             max-width: 300px;
             word-wrap: break-word;
         }
+
         #retryButton {
             display: none;
             padding: 10px 20px;
@@ -240,10 +269,12 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
         }
+
         #retryButton:hover {
             background-color: #990000;
             transform: translateY(-2px);
         }
+
         .footer {
             display: flex;
             justify-content: space-between;
@@ -259,39 +290,48 @@
             line-height: 1.5;
             box-sizing: border-box;
         }
+
         .credits-left, .credits-right {
             flex: 1;
             display: flex;
             align-items: center;
             padding: 0 10px;
         }
+
         .credits-left {
             justify-content: flex-start;
             text-align: left;
         }
+
         .credits-right {
             justify-content: flex-end;
             text-align: right;
         }
+
         .footer-center {
             flex: 1;
             justify-content: center;
             text-align: center;
         }
+
         .footer a {
             color: #ffffff;
             text-decoration: none;
         }
+
         .footer a:hover {
             text-decoration: underline;
         }
+
         .footer .message-icon {
             cursor: pointer;
             margin-right: 5px;
         }
+
         .footer .message-icon:hover {
             color: #ff5555;
         }
+
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -332,6 +372,7 @@
                 height: calc(100vh - 140px);
             }
         }
+
         @media (max-width: 480px) {
             .nav-item {
                 padding: 5px 10px;
@@ -350,6 +391,7 @@
                 padding: 3px 0;
             }
         }
+
         @media (max-width: 400px) {
             .credits-left, .footer-center, .credits-right {
                 font-size: 11px;
@@ -359,366 +401,396 @@
 </head>
 <body>
     <div id="particles-js"></div>
-
-    <nav class="navbar">
+    <div class="navbar">
         <span class="menu-toggle">☰</span>
         <div class="nav-items">
             <a href="/" class="nav-item">Home</a>
-            <a href="/help" class="nav-item">Help</a>
+            <a href="templates/help.html">Help</a>
         </div>
-    </nav>
-
+    </div>
     <div class="container">
-        <h1>YouTube Downloader</h1>
-        <p>Enter a YouTube URL to download video or audio</p>
+        <h1>YouTube Video Downloader Pro</h1>
+        <p>A stable and fast internet connection is required for optimal download performance.</p>
         <div class="input-container">
-            <input type="text" id="urlInput" placeholder="Paste YouTube URL here">
+            <label for="urlInput" style="display: none;">YouTube URL</label>
+            <input type="text" placeholder="Paste your YouTube link here" id="urlInput" aria-label="Enter YouTube URL">
         </div>
-        <div class="loading" id="loading">Fetching streams</div>
-        <div class="download-options" id="downloadOptions">
-            <p id="videoTitle"></p>
-            <div id="streamButtons"></div>
-            <div class="options-container" id="extraOptions"></div>
+        <div class="loading" id="loading">Fetching Info</div>
+        <div class="options-container" id="optionsContainer" style="display: none;">
+            <label><input type="checkbox" id="subtitlesCheckbox"> Embed Subtitles in Video</label>
         </div>
-        <div id="progress">
-            <div class="progress-bar">
-                <div class="progress-bar-fill" id="progressBar"></div>
-            </div>
-            <div id="progress-text"></div>
-        </div>
+        <div class="download-options" id="downloadOptions"></div>
         <div id="errorMessage"></div>
-        <button id="retryButton">Retry</button>
+        <button id="retryButton" onclick="retryDownload()">Retry Download</button>
+        <div id="progress">
+            <div id="progress-text"></div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="credits-left">Designed & Developed With ❤️ By Nilay Naha</div>
+        <div class="footer-center">
+            <span class="message-icon" onclick="window.location.href='https://aminilay.github.io/nilay-naha-portfolio/'">✉️</span>
+            <a href="https://aminilay.github.io/nilay-naha-portfolio/" target="_blank">Click Here To Find Dev!</a>
+        </div>
+        <div class="credits-right">© 2025 ALL RIGHTS RESERVED</div>
     </div>
 
-    <footer class="footer">
-        <div class="credits-left">
-            <span class="message-icon">✉️</span>
-            <span>Contact: <a href="mailto:your-email@example.com">your-email@example.com</a></span>
-        </div>
-        <div class="footer-center">
-            <span>© 2025 YouTube Downloader. All rights reserved.</span>
-        </div>
-        <div class="credits-right">
-            <span>Designed by <a href="https://github.com/aminilay" target="_blank">Aminilay</a></span>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script>
-        // Initialize particles.js
-        particlesJS("particles-js", {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#ff5555"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false
-                },
-                "size": {
-                    "value": 3,
-                    "random": true
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#ff5555",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 6,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false
-                }
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: window.innerWidth < 768 ? 40 : 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
             },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "repulse"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "repulse": {
-                        "distance": 100,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    }
-                }
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
             },
-            "retina_detect": true
+            retina_detect: true
         });
 
-        // JavaScript for handling form submission and downloads
         const urlInput = document.getElementById('urlInput');
         const loading = document.getElementById('loading');
         const downloadOptions = document.getElementById('downloadOptions');
-        const videoTitle = document.getElementById('videoTitle');
-        const streamButtons = document.getElementById('streamButtons');
-        const extraOptions = document.getElementById('extraOptions');
-        const progress = document.getElementById('progress');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progress-text');
         const errorMessage = document.getElementById('errorMessage');
         const retryButton = document.getElementById('retryButton');
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navItems = document.querySelector('.nav-items');
-
+        const optionsContainer = document.getElementById('optionsContainer');
+        const subtitlesCheckbox = document.getElementById('subtitlesCheckbox');
+        const progress = document.getElementById('progress');
+        const progressText = document.getElementById('progress-text');
+        const progressBarFill = document.getElementById('progress-bar-fill');
         let currentUrl = '';
-        let isDownloading = false;
+        let thumbnailAvailable = false;
+        let lastDownloadParams = null;
 
-        menuToggle.addEventListener('click', () => {
-            navItems.classList.toggle('active');
-        });
-
-        urlInput.addEventListener('input', () => {
-            if (urlInput.value.trim() !== currentUrl) {
-                resetUI();
-            }
-        });
-
-        urlInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !isDownloading) {
-                fetchStreams();
-            }
-        });
-
-        retryButton.addEventListener('click', () => {
-            resetUI();
-            fetchStreams();
-        });
-
-        function resetUI() {
-            loading.style.display = 'none';
-            downloadOptions.style.display = 'none';
-            downloadOptions.classList.remove('show');
-            streamButtons.innerHTML = '';
-            extraOptions.innerHTML = '';
-            videoTitle.textContent = '';
-            progress.style.display = 'none';
-            progressBar.style.width = '0%';
-            progressBar.classList.remove('indeterminate');
-            progressText.textContent = '';
-            errorMessage.style.display = 'none';
-            retryButton.style.display = 'none';
-            isDownloading = false;
+        function adjustInputWidth() {
+            const input = urlInput;
+            const text = input.value || input.placeholder;
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            context.font = getComputedStyle(input).font;
+            const textWidth = context.measureText(text).width + 40;
+            const minWidth = 300;
+            const maxWidth = window.innerWidth * 0.9 - 40;
+            const newWidth = Math.max(minWidth, Math.min(textWidth, maxWidth));
+            input.style.width = `${newWidth}px`;
         }
 
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            retryButton.style.display = 'block';
-            loading.style.display = 'none';
-            progress.style.display = 'none';
-            progressBar.classList.remove('indeterminate');
-        }
+        urlInput.addEventListener('input', adjustInputWidth);
+        window.addEventListener('resize', adjustInputWidth);
+        adjustInputWidth();
 
-        function fetchStreams() {
+        urlInput.addEventListener('input', async () => {
             const url = urlInput.value.trim();
-            if (!url) {
-                showError('Please enter a YouTube URL.');
-                return;
+            if (url) {
+                loading.style.display = 'block';
+                downloadOptions.classList.remove('show');
+                errorMessage.style.display = 'none';
+                retryButton.style.display = 'none';
+                progress.style.display = 'none';
+                progressText.textContent = '';
+                progressBarFill.classList.remove('indeterminate');
+                try {
+                    const response = await fetch('/get_streams', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ url })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        loading.style.display = 'none';
+                        optionsContainer.style.display = 'flex';
+                        currentUrl = url;
+                        thumbnailAvailable = data.thumbnail_available;
+                        renderDownloadOptions(data.streams, url);
+                    } else {
+                        errorMessage.textContent = data.error + ' Please try a different video or check your connection.';
+                        errorMessage.style.display = 'block';
+                        loading.style.display = 'none';
+                    }
+                } catch (error) {
+                    errorMessage.textContent = `Network error: ${error.message}. Please check your connection and try again.`;
+                    errorMessage.style.display = 'block';
+                    loading.style.display = 'none';
+                }
             }
+        });
 
-            currentUrl = url;
-            loading.style.display = 'block';
-            downloadOptions.style.display = 'none';
-            errorMessage.style.display = 'none';
-            retryButton.style.display = 'none';
+        function renderDownloadOptions(streams, url) {
+            downloadOptions.innerHTML = '';
+            streams.forEach(stream => {
+                const button = document.createElement('button');
+                const quality = stream.quality === 'Audio' ? 'Audio' : `${stream.quality}p`;
+                button.textContent = `Download ${quality} (${stream.format}) - ${stream.size.toFixed(2)} MB`;
+                button.onclick = () => download(url, stream.format_id, stream.format);
+                downloadOptions.appendChild(button);
+            });
 
-            fetch('/get_streams', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `url=${encodeURIComponent(url)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                loading.style.display = 'none';
-                if (data.error) {
-                    showError(data.error);
-                    return;
+            const updateExtraOptions = () => {
+                const existingExtraButtons = downloadOptions.querySelectorAll('.extra-button');
+                existingExtraButtons.forEach(btn => btn.remove());
+
+                if (thumbnailAvailable) {
+                    const thumbnailButton = document.createElement('button');
+                    thumbnailButton.textContent = 'Download Thumbnail (JPG)';
+                    thumbnailButton.className = 'extra-button';
+                    thumbnailButton.onclick = () => downloadExtra(url, 'thumbnail');
+                    downloadOptions.appendChild(thumbnailButton);
                 }
+            };
 
-                videoTitle.textContent = data.title;
-                streamButtons.innerHTML = '';
-                extraOptions.innerHTML = '';
+            subtitlesCheckbox.onchange = updateExtraOptions;
+            updateExtraOptions();
 
-                data.streams.forEach(stream => {
-                    const button = document.createElement('button');
-                    button.textContent = stream.quality === 'Audio' ? 'Audio (mp3)' : `${stream.quality}p`;
-                    button.dataset.formatId = stream.format_id;
-                    button.dataset.format = stream.format;
-                    button.addEventListener('click', () => downloadFile(url, stream.format_id, stream.format));
-                    streamButtons.appendChild(button);
-                });
+            downloadOptions.style.display = 'block';
+            setTimeout(() => downloadOptions.classList.add('show'), 10);
+        }
 
-                if (data.thumbnail_available) {
-                    const thumbnailLabel = document.createElement('label');
-                    const thumbnailCheckbox = document.createElement('input');
-                    thumbnailCheckbox.type = 'checkbox';
-                    thumbnailCheckbox.id = 'thumbnailCheckbox';
-                    thumbnailLabel.appendChild(thumbnailCheckbox);
-                    thumbnailLabel.appendChild(document.createTextNode('Thumbnail'));
-                    extraOptions.appendChild(thumbnailLabel);
+        async function downloadWithRetry(url, format_id, format, retries = 3) {
+            let attempt = 1;
+            while (attempt <= retries) {
+                try {
+                    progress.style.display = 'block';
+                    progressText.textContent = `Preparing download... (Attempt ${attempt}/${retries})`;
+                    progressBarFill.classList.add('indeterminate');
+                    errorMessage.style.display = 'none';
+                    retryButton.style.display = 'none';
 
-                    thumbnailCheckbox.addEventListener('change', () => {
-                        if (thumbnailCheckbox.checked) {
-                            downloadExtra(url, 'thumbnail');
+                    const startTime = Date.now();
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => {
+                        controller.abort();
+                        throw new Error('Download timed out. Your connection might be too slow.');
+                    }, 120000);
+
+                    const response = await fetch('/download', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            url,
+                            format_id,
+                            format,
+                            subtitles: subtitlesCheckbox.checked
+                        }),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Failed to download file.');
+                    }
+
+                    progressBarFill.classList.remove('indeterminate');
+                    const contentLength = response.headers.get('Content-Length');
+                    const total = parseInt(contentLength, 10);
+                    let loaded = 0;
+
+                    let lastLoaded = 0;
+                    let lastTime = Date.now();
+                    const speedCheckInterval = setInterval(() => {
+                        const now = Date.now();
+                        const timeDiff = (now - lastTime) / 1000;
+                        const bytesDiff = loaded - lastLoaded;
+                        const speed = (bytesDiff / timeDiff) / 1024;
+                        if (speed > 0 && speed < 50) {
+                            progressText.textContent = `Download is slow (${speed.toFixed(2)} KB/s). Please be patient...`;
                         }
-                    });
-                }
+                        lastLoaded = loaded;
+                        lastTime = now;
+                    }, 5000);
 
-                downloadOptions.style.display = 'block';
-                setTimeout(() => downloadOptions.classList.add('show'), 10);
-            })
-            .catch(error => {
-                loading.style.display = 'none';
-                showError('Failed to fetch streams. Please check your connection and try again.');
-                console.error('Fetch streams error:', error);
-            });
+                    const reader = response.body.getReader();
+                    const chunks = [];
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        chunks.push(value);
+                        loaded += value.length;
+
+                        if (total) {
+                            const percent = (loaded / total) * 100;
+                            progressBarFill.style.width = `${percent}%`;
+                            progressText.textContent = `Downloading... ${percent.toFixed(2)}%`;
+                        } else {
+                            progressText.textContent = `Downloading... ${loaded} bytes received`;
+                        }
+                    }
+
+                    clearInterval(speedCheckInterval);
+
+                    const blob = new Blob(chunks);
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = response.headers.get('Content-Disposition')?.split('filename=')[1] || `download.${format}`;
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+
+                    progressText.textContent = 'Download complete!';
+                    progressBarFill.style.width = '100%';
+                    return;
+
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        errorMessage.textContent = `Download timed out after ${Math.round((Date.now() - startTime) / 1000)} seconds. Your connection might be too slow.`;
+                    } else {
+                        errorMessage.textContent = `Download error: ${error.message}.`;
+                    }
+                    errorMessage.style.display = 'block';
+                    progress.style.display = 'none';
+                    progressBarFill.classList.remove('indeterminate');
+
+                    if (attempt < retries) {
+                        progressText.textContent = `Retrying... (${attempt}/${retries})`;
+                        attempt++;
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+                    } else {
+                        errorMessage.textContent += ' All retries failed. Please check your connection and try again.';
+                        retryButton.style.display = 'block';
+                        lastDownloadParams = { url, format_id, format };
+                        break;
+                    }
+                }
+            }
         }
 
-        function downloadFile(url, formatId, format) {
-            if (isDownloading) return;
-            isDownloading = true;
-
-            progress.style.display = 'block';
-            progressBar.classList.add('indeterminate');
-            progressText.textContent = 'Downloading...';
-            errorMessage.style.display = 'none';
-            retryButton.style.display = 'none';
-
-            const formData = new FormData();
-            formData.append('url', url);
-            formData.append('format_id', formatId);
-            formData.append('format', format);
-
-            fetch('/download', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        throw new Error(data.error || 'Download failed');
-                    });
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = `${videoTitle.textContent}.${format}`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-
-                progressBar.classList.remove('indeterminate');
-                progressBar.style.width = '100%';
-                progressText.textContent = 'Download complete!';
-                setTimeout(() => {
-                    progress.style.display = 'none';
-                    progressBar.style.width = '0%';
-                    progressText.textContent = '';
-                    isDownloading = false;
-                }, 2000);
-            })
-            .catch(error => {
-                progress.style.display = 'none';
-                progressBar.classList.remove('indeterminate');
-                showError(error.message || 'Download failed. Please try again.');
-                isDownloading = false;
-                console.error('Download error:', error);
-            });
+        async function download(url, format_id, format) {
+            lastDownloadParams = { url, format_id, format };
+            await downloadWithRetry(url, format_id, format);
         }
 
-        function downloadExtra(url, type) {
-            if (isDownloading) return;
-            isDownloading = true;
+        function retryDownload() {
+            if (lastDownloadParams) {
+                const { url, format_id, format } = lastDownloadParams;
+                downloadWithRetry(url, format_id, format);
+            }
+        }
 
-            progress.style.display = 'block';
-            progressBar.classList.add('indeterminate');
-            progressText.textContent = 'Downloading thumbnail...';
-            errorMessage.style.display = 'none';
-            retryButton.style.display = 'none';
+        async function downloadExtraWithRetry(url, type, retries = 3) {
+            let attempt = 1;
+            while (attempt <= retries) {
+                try {
+                    progress.style.display = 'block';
+                    progressText.textContent = `Preparing ${type} download... (Attempt ${attempt}/${retries})`;
+                    progressBarFill.classList.add('indeterminate');
+                    errorMessage.style.display = 'none';
+                    retryButton.style.display = 'none';
 
-            const formData = new FormData();
-            formData.append('url', url);
-            formData.append('type', type);
+                    const startTime = Date.now();
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => {
+                        controller.abort();
+                        throw new Error('Download timed out. Your connection might be too slow.');
+                    }, 60000);
 
-            fetch('/download_extra', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        throw new Error(data.error || 'Thumbnail download failed');
+                    const response = await fetch('/download_extra', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            url,
+                            type
+                        }),
+                        signal: controller.signal
                     });
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = `${videoTitle.textContent}_thumbnail.jpg`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
 
-                progressBar.classList.remove('indeterminate');
-                progressBar.style.width = '100%';
-                progressText.textContent = 'Thumbnail download complete!';
-                setTimeout(() => {
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Failed to download thumbnail.');
+                    }
+
+                    progressBarFill.classList.remove('indeterminate');
+                    const contentLength = response.headers.get('Content-Length');
+                    const total = parseInt(contentLength, 10);
+                    let loaded = 0;
+
+                    let lastLoaded = 0;
+                    let lastTime = Date.now();
+                    const speedCheckInterval = setInterval(() => {
+                        const now = Date.now();
+                        const timeDiff = (now - lastTime) / 1000;
+                        const bytesDiff = loaded - lastLoaded;
+                        const speed = (bytesDiff / timeDiff) / 1024;
+                        if (speed > 0 && speed < 50) {
+                            progressText.textContent = `Download is slow (${speed.toFixed(2)} KB/s). Please be patient...`;
+                        }
+                        lastLoaded = loaded;
+                        lastTime = now;
+                    }, 5000);
+
+                    const reader = response.body.getReader();
+                    const chunks = [];
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        chunks.push(value);
+                        loaded += value.length;
+
+                        if (total) {
+                            const percent = (loaded / total) * 100;
+                            progressBarFill.style.width = `${percent}%`;
+                            progressText.textContent = `Downloading ${type}... ${percent.toFixed(2)}%`;
+                        } else {
+                            progressText.textContent = `Downloading ${type}... ${loaded} bytes received`;
+                        }
+                    }
+
+                    clearInterval(speedCheckInterval);
+
+                    const blob = new Blob(chunks);
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = response.headers.get('Content-Disposition')?.split('filename=')[1] || `download_${type}.jpg`;
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+
+                    progressText.textContent = `${type.charAt(0).toUpperCase() + type.slice(1)} download complete!`;
+                    progressBarFill.style.width = '100%';
+                    return;
+
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        errorMessage.textContent = `Download timed out after ${Math.round((Date.now() - startTime) / 1000)} seconds. Your connection might be too slow.`;
+                    } else {
+                        errorMessage.textContent = `Download error: ${error.message}.`;
+                    }
+                    errorMessage.style.display = 'block';
                     progress.style.display = 'none';
-                    progressBar.style.width = '0%';
-                    progressText.textContent = '';
-                    isDownloading = false;
-                }, 2000);
-            })
-            .catch(error => {
-                progress.style.display = 'none';
-                progressBar.classList.remove('indeterminate');
-                showError(error.message || 'Thumbnail download failed. Please try again.');
-                isDownloading = false;
-                console.error('Thumbnail download error:', error);
-            });
+                    progressBarFill.classList.remove('indeterminate');
+
+                    if (attempt < retries) {
+                        progressText.textContent = `Retrying... (${attempt}/${retries})`;
+                        attempt++;
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+                    } else {
+                        errorMessage.textContent += ' All retries failed. Please check your connection and try again.';
+                        retryButton.style.display = 'block';
+                        lastDownloadParams = { url, type };
+                        break;
+                    }
+                }
+            }
+        }
+
+        async function downloadExtra(url, type) {
+            lastDownloadParams = { url, type };
+            await downloadExtraWithRetry(url, type);
         }
     </script>
 </body>
